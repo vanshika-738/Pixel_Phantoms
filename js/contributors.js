@@ -24,10 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
 // 1. Master Initialization Function
 async function initData() {
     try {
-        // Fetch Repo Info, Contributors, and Pull Requests (last 100)
-        const [repoRes, contributorsRes] = await Promise.all([
+        // Fetch Repo Info, Contributors, and Total Commits
+        const [repoRes, contributorsRes, totalCommits] = await Promise.all([
             fetch(API_BASE),
-            fetch(`${API_BASE}/contributors?per_page=100`)
+            fetch(`${API_BASE}/contributors?per_page=100`),
+            fetchTotalCommits() // NEW: Dynamic commit count
         ]);
 
         const repoData = await repoRes.json();
@@ -36,11 +37,35 @@ async function initData() {
         // Fetch Pull Requests (Recursive) to capture history
         const rawPulls = await fetchAllPulls();
 
-        processData(repoData, rawContributors, rawPulls);
+        processData(repoData, rawContributors, rawPulls, totalCommits);
 
     } catch (error) {
         console.error('Error initializing data:', error);
         document.getElementById('contributors-grid').innerHTML = '<p>Failed to load data.</p>';
+    }
+}
+
+// NEW Helper: Fetch Total Commits using Link Header Strategy
+async function fetchTotalCommits() {
+    try {
+        // Request 1 commit per page to minimize data transfer and check the 'Link' header
+        const res = await fetch(`${API_BASE}/commits?per_page=1`);
+        const linkHeader = res.headers.get('Link');
+        
+        // If pagination exists, parse the "last" page number
+        if (linkHeader) {
+            const match = linkHeader.match(/[?&]page=(\d+)[^>]*>; rel="last"/);
+            if (match) {
+                return match[1];
+            }
+        }
+        
+        // If no link header (e.g., repo has < 2 commits), count the returned array
+        const data = await res.json();
+        return data.length;
+    } catch (e) {
+        console.error("Error fetching total commits:", e);
+        return "50+"; // Fallback in case of API limits
     }
 }
 
@@ -61,7 +86,7 @@ async function fetchAllPulls() {
 }
 
 // 2. Process & Merge Data
-function processData(repoData, contributors, pulls) {
+function processData(repoData, contributors, pulls, totalCommits) {
     const leadAvatar = document.getElementById('lead-avatar');
     const statsMap = {};
 
@@ -136,20 +161,21 @@ function processData(repoData, contributors, pulls) {
         totalProjectPRs, 
         totalProjectPoints, 
         repoData.stargazers_count, 
-        repoData.forks_count
+        repoData.forks_count,
+        totalCommits // Pass retrieved commits count
     );
 
     // E. Render Grid
     renderContributors(1);
 }
 
-function updateGlobalStats(count, prs, points, stars, forks) {
+function updateGlobalStats(count, prs, points, stars, forks, commits) {
     document.getElementById('total-contributors').textContent = count;
     document.getElementById('total-prs').textContent = prs;
     document.getElementById('total-points').textContent = points;
     document.getElementById('total-stars').textContent = stars;
     document.getElementById('total-forks').textContent = forks;
-    document.getElementById('total-commits').textContent = "50+"; 
+    document.getElementById('total-commits').textContent = commits; // Updated to use dynamic value
 }
 
 // 3. Get League/Badge Data
@@ -161,7 +187,7 @@ function getLeagueData(points) {
     } else if (points > 30) {
         return { text: 'Bronze 🥉', class: 'badge-bronze', tier: 'tier-bronze', label: 'Bronze League' };
     } else {
-        return { text: 'Contributor 🚀', class: 'badge-contributor', tier: 'tier-contributor', label: 'Contributor' };
+        return { text: 'Contributor 🎖️', class: 'badge-contributor', tier: 'tier-contributor', label: 'Contributor' };
     }
 }
 
@@ -238,7 +264,7 @@ function openModal(contributor, league, rank) {
     document.getElementById('modal-rank').textContent = `#${rank}`;
     document.getElementById('modal-score').textContent = contributor.points;
     document.getElementById('modal-prs').textContent = contributor.prs;
-    document.getElementById('modal-commits').textContent = contributor.contributions;
+    document.getElementById('modal-commits').textContent = contributor.contributions; // GitHub API provided contributions (commits)
     document.getElementById('modal-league-badge').textContent = league.label;
 
     const prLink = `https://github.com/${REPO_OWNER}/${REPO_NAME}/pulls?q=is%3Apr+author%3A${contributor.login}`;

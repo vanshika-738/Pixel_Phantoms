@@ -353,3 +353,186 @@
     .hack-details-grid { grid-template-columns: 1fr; }
     .hero-glitch { font-size: 3rem; }
 }
+
+/* --- GLOBAL & HERO (Previous styles preserved) --- */
+.hacker-theme {
+    background-color: #050505;
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', monospace;
+    overflow-x: hidden;
+}
+
+/* Utility: Section Headers */
+.section-header-glitch {
+    font-size: 2.5rem;
+    color: #fff;
+    margin-bottom: 10px;
+    position: relative;
+    display: inline-block;
+}
+.section-header-glitch::before {
+    content: attr(data-text);
+    position: absolute;
+    left: 2px; text-shadow: -1px 0 #ff0055;
+    top: 0; color: #fff; background: #050505;
+    overflow: hidden; clip: rect(0, 900px, 0, 0); 
+    animation: noise-anim 2s infinite linear alternate-reverse;
+}
+.section-sub { color: #00ff88; margin-bottom: 40px; font-size: 1.1rem; }
+
+/* --- 3. CYBER SEMINARS --- */
+.cyber-seminars {
+    padding: 80px 5%;
+    background: #080808;
+    border-top: 1px dashed #333;
+}
+.seminar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+.seminar-card {
+    background: #111;
+    border: 1px solid #333;
+    padding: 25px;
+    position: relative;
+    transition: 0.3s;
+    overflow: hidden;
+}
+.seminar-card:hover {
+    border-color: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.1);
+    transform: translateY(-5px);
+}
+.sem-status {
+    font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; display: inline-block;
+}
+.sem-status.live { color: #ff0055; animation: blink 1s infinite; }
+.sem-status.upcoming { color: #00aaff; }
+.sem-thumb {
+    font-size: 2.5rem; color: #444; margin-bottom: 15px;
+}
+.seminar-card h3 { margin: 0 0 5px 0; color: #fff; }
+.seminar-card p { color: #888; font-size: 0.9rem; margin-bottom: 15px; }
+.link-terminal { color: #00ff88; text-decoration: none; font-weight: bold; border-bottom: 1px solid transparent; }
+.link-terminal:hover { border-bottom-color: #00ff88; }
+.btn-sm { background: transparent; border: 1px solid #555; color: #aaa; padding: 5px 10px; cursor: pointer; transition: 0.2s; }
+.btn-sm:hover { border-color: #fff; color: #fff; }
+
+/* --- 4. SKILL TREE --- */
+.skill-tree-section {
+    padding: 80px 5%;
+    background: #050505;
+    text-align: center;
+}
+.skill-path-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+.skill-node {
+    width: 140px; height: 140px;
+    background: #111;
+    border: 2px solid #333;
+    border-radius: 50%; /* Circle or Hexagon looks good */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    position: relative;
+    z-index: 2;
+}
+.skill-node:hover { border-color: #00aaff; box-shadow: 0 0 20px rgba(0, 170, 255, 0.3); transform: scale(1.1); }
+.node-icon { font-size: 2rem; color: #fff; margin-bottom: 5px; }
+.skill-node h4 { margin: 0; font-size: 0.8rem; color: #aaa; }
+.node-level { font-size: 0.7rem; color: #00aaff; margin-top: 5px; font-weight: bold; }
+.skill-node.locked { border-style: dashed; opacity: 0.6; }
+.skill-node.locked:hover { border-color: #ff0055; box-shadow: none; transform: none; }
+.connector {
+    width: 60px; height: 2px; background: #333;
+}
+.center-btn { margin-top: 20px; }
+
+/* --- 5. PROJECT MAINFRAME --- */
+.project-mainframe {
+    padding: 80px 5%;
+    background: #080808;
+}
+.project-matrix {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.proj-card {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    border: 1px solid #333;
+    overflow: hidden;
+    group: 1;
+}
+.proj-card::before {
+    content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.7); transition: 0.3s;
+}
+.proj-card:hover::before { background: rgba(0,0,0,0.2); }
+.proj-content {
+    position: absolute; bottom: 0; left: 0; width: 100%;
+    padding: 20px;
+    background: linear-gradient(to top, #000, transparent);
+    transform: translateY(20px); transition: 0.3s;
+}
+.proj-card:hover .proj-content { transform: translateY(0); }
+.proj-content h3 { margin: 0; color: #fff; font-size: 1.2rem; }
+.proj-content p { margin: 5px 0 0; color: #00ff88; font-size: 0.9rem; opacity: 0; transition: 0.3s; }
+.proj-card:hover .proj-content p { opacity: 1; }
+
+/* --- 7. LEADERBOARD PREVIEW --- */
+.leaderboard-preview {
+    padding: 60px 5%;
+    background: #050505;
+    border-top: 1px solid #333;
+    display: flex; flex-direction: column; align-items: center;
+}
+.lb-grid {
+    width: 100%; max-width: 600px;
+    border: 1px solid #333;
+    background: #111;
+    margin-bottom: 10px;
+}
+.lb-row {
+    display: grid; grid-template-columns: 1fr 3fr 1fr;
+    padding: 15px; border-bottom: 1px solid #222;
+    font-family: 'JetBrains Mono', monospace;
+}
+.lb-row:last-child { border-bottom: none; }
+.lb-row.head { background: #222; color: #888; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; }
+.lb-row span:last-child { text-align: right; color: #00ff88; }
+.lb-row.gold { border-left: 4px solid #ffd700; }
+.lb-row.silver { border-left: 4px solid #c0c0c0; }
+.lb-row.bronze { border-left: 4px solid #cd7f32; }
+.lb-footer { color: #555; font-size: 0.8rem; }
+
+/* ANIMATIONS */
+@keyframes blink { 50% { opacity: 0.5; } }
+@keyframes noise-anim {
+    0% { clip: rect(10px, 9999px, 30px, 0); }
+    20% { clip: rect(80px, 9999px, 10px, 0); }
+    40% { clip: rect(40px, 9999px, 50px, 0); }
+    60% { clip: rect(20px, 9999px, 80px, 0); }
+    80% { clip: rect(60px, 9999px, 20px, 0); }
+    100% { clip: rect(30px, 9999px, 60px, 0); }
+}
+
+/* Existing styles for Hero, Hackathon, Terminal, Functional Grid retained... */
+#cursor-highlight {
+    position: fixed; top: 0; left: 0; width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
+    border-radius: 50%; pointer-events: none; z-index: 999;
+    transform: translate(-50%, -50%); mix-blend-mode: screen;
+}
+/* ... (Paste remainder of previous CSS here for Hero, Hackathon, etc.) ... */

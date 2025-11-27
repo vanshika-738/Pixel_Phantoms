@@ -67,6 +67,4 @@ function renderNavbar(basePath = '') {
     }
 }
 
-}
-
 const currentPage = window.location.pathname.split("/").pop() || 'index.html';

@@ -315,7 +315,7 @@ function renderLeaderboardTable(data) {
         row.innerHTML = `
             <td class="rank-cell">#${String(agent.rank).padStart(2,'0')}</td>
             <td class="agent-cell">
-                <img src="${agent.avatar}" onerror="this.src='../assets/logo.png'">
+                <img src="${agent.avatar}" onerror="this.src='assets/logo.png'">
                 <div>
                     <span class="agent-name">${agent.login}</span>
                     <span class="agent-sub">Events: ${agent.events} | PRs: ${agent.prCount}</span>
@@ -403,7 +403,7 @@ function populateRoster(data) {
         const item = document.createElement('li');
         item.className = 'roster-item';
         item.innerHTML = `
-            <img src="${agent.avatar}" onerror="this.src='../assets/logo.png'">
+            <img src="${agent.avatar}" onerror="this.src='assets/logo.png'">
             <div>
                 <strong style="color:#e0f7ff; display:block; font-size:0.9rem;">${agent.login}</strong>
                 <span style="font-size:0.7rem; color:#5c7080;">${agent.xp} XP</span>
